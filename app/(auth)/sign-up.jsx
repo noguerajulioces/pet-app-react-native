@@ -1,26 +1,39 @@
-import { View, Text, ScrollView, Image} from 'react-native'
+import { View, Text, ScrollView, Image, Alert} from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { images } from '../../constants'
 import FormField from '../../components/FormField'
 import CustomButtom from '../../components/CustomButtom'
-import { Link } from 'expo-router'
+import { Link, router } from 'expo-router'
 
 import { createUser } from '../../lib/appwrite'
 
 
-const SignIn = () => {
+const SignUp = () => {
 
   const [form, setForm] = useState({
+    username: '',
     email: '',
     password: ''
   })
 
   const [isSubmiting, setIsSubmitting] = useState(false)
 
-  const submit = () => {
+  const submit = async () => {
+    if(!form.username || !form.email || !form.password){
+      Alert.alert('Error', 'Please fill in all the fields')
+    }
+    setIsSubmitting(true);
+    try {
+      const result = await createUser(form.email, form.password, form.username);
 
+      router.replace('/home')
+    } catch (error) {
+      Alert.alert('Error', error.message)
+    }finally{
+      setIsSubmitting(false)
+    }
   }
   
   return (
@@ -31,15 +44,23 @@ const SignIn = () => {
          resizeMode='contain'
          className="w-[115px] h-[35px]"/>
 
-         <Text className="text-white text-2xl text-semibold mt-10 font-psemibold"> Log in to Aora </Text>
+         <Text className="text-white text-2xl text-semibold mt-10 font-psemibold">Sign up in to Aora </Text>
 
          <FormField
+            title="Username"
+            value={form.username}
+            handleChangeText={(e) => setForm({ ...form, username: e})}
+            otherStyles="mt-10"
+         />
+
+          <FormField
             title="Email"
             value={form.email}
             handleChangeText={(e) => setForm({ ...form, email: e})}
             otherStyles="mt-7"
             keyboardType="email-address"
          />
+
 
         <FormField
             title="Password"
@@ -49,7 +70,7 @@ const SignIn = () => {
          />
 
          <CustomButtom 
-          title="Sign In"
+          title="Sign Up"
           handlePress={submit}
           containerStyles="w-full mt-7"
           isLoading={isSubmiting}
@@ -57,9 +78,9 @@ const SignIn = () => {
 
          <View className="justify-center pt-5 flex-row gap-2">
           <Text className="text-gray-100 text-lg font-pregular">
-            Don't have account?
+            Have an account already?
           </Text>
-          <Link href="/sign-up" className='text-lg font-psemibold text-secondary'>Sign up</Link>
+          <Link href="/sign-in" className='text-lg font-psemibold text-secondary'>Sign in</Link>
          </View>
         </View>
       </ScrollView>
@@ -67,4 +88,4 @@ const SignIn = () => {
   )
 }
 
-export default SignIn
+export default SignUp
