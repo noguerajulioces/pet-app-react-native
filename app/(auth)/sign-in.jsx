@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { images } from '../../constants'
 import FormField from '../../components/FormField'
+import CustomButtom from '../../components/CustomButtom'
+import { Link } from 'expo-router'
 
 
 const SignIn = () => {
@@ -12,6 +14,11 @@ const SignIn = () => {
     email: '',
     password: ''
   })
+
+  const [isSubmiting, setIsSubmitting] = useState(false)
+
+  const submit = () => {}
+  
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
@@ -36,6 +43,20 @@ const SignIn = () => {
             handleChangeText={(e) => setForm({ ...form, password: e})}
             otherStyles="mt-7"
          />
+
+         <CustomButtom 
+          title="Sign In"
+          handlePress={submit}
+          containerStyles="w-full mt-7"
+          isLoading={isSubmiting}
+         />
+
+         <View className="justify-center pt-5 flex-row gap-2">
+          <Text className="text-gray-100 text-lg font-pregular">
+            Don't have account?
+          </Text>
+          <Link href="/sign-out" className='text-lg font-psemibold text-secondary'>Sign up</Link>
+         </View>
         </View>
       </ScrollView>
     </SafeAreaView>
