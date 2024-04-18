@@ -3,7 +3,7 @@ import React from 'react'
 
 const Home = () => {
   return (
-    <View>
+    <View className="h-full justify-center items-center">
       <Text>Home</Text>
     </View>
   )

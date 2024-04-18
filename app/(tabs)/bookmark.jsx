@@ -3,7 +3,7 @@ import React from 'react'
 
 const Bookmark = () => {
   return (
-    <View>
+    <View className="h-full justify-center items-center">
       <Text>Bookmark</Text>
     </View>
   )
